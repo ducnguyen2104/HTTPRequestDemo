@@ -17,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName();
+    private static final String REQUESTTAG = "string request first";
     private Button btn;
     private RequestQueue rq;
     private StringRequest sr;
@@ -58,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        sr.setTag(REQUESTTAG);
         rq.add(sr);
+        //rq.cancelAll(REQUESTTAG);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(rq != null) {
+            rq.cancelAll(REQUESTTAG);
+        }
     }
 }
