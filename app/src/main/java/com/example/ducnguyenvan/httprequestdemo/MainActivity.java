@@ -2,9 +2,11 @@ package com.example.ducnguyenvan.httprequestdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue rq;
     private StringRequest sr;
     private TextView txt;
+    private ProgressBar prgBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +32,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txt = (TextView)findViewById(R.id.text);
+        txt.setMovementMethod(new ScrollingMovementMethod());
         btn = (Button)findViewById(R.id.button);
-
+        prgBar = (ProgressBar)findViewById(R.id.prgBar);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendRequestThenPrintResponse();
+                prgBar.setVisibility(View.VISIBLE);
+                setTitle("Loading...");
             }
         });
 
@@ -45,17 +51,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendRequestThenPrintResponse() {
         rq = Volley.newRequestQueue(this);
-        sr = new StringRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/posts/1", new Response.Listener<String>() {
+        sr = new StringRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/comments", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(TAG,"Response: " + response.toString());
                 txt.setText("Response: " + response.toString());
+                prgBar.setVisibility(View.GONE);
+                setTitle("Loading finished.");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i(TAG,"Error: " + error.toString());
                 txt.setText("Error: " + error.toString());
+                prgBar.setVisibility(View.GONE);
+                setTitle("Loading error!");
             }
         });
 
