@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendRequestThenPrintResponse() {
         rq = Volley.newRequestQueue(this);
-        sr = new StringRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/comments", new Response.Listener<String>() {
+        sr = new StringRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/photos", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i(TAG,"Response: " + response.toString());
